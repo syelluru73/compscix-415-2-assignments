@@ -1,2 +1,2 @@
 # compscix-415-2-assignments
-Into to Data Science by Robert Clements
+Intro to Data Science by Robert Clements
