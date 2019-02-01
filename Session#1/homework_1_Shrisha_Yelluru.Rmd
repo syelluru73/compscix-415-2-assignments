@@ -12,13 +12,27 @@ My Github repository for my assignments can be found at this URL: https://github
 
 ```{r load_packages, warning=FALSE, message=FALSE}
 ```
+<--Answer#1-->
 There are 23,018 observations with 10 variables like code, name, latitude, longitude etc
 
 WorldCities <- head(WorldCities, 200) # 200 rows
 country_col <- WorldCities$country
 unique(country_col)
 
-#extract the region column
+<--Answer#2-->
+<--extract the region column-->
 region_col <- WorldCities$region
 
 unique(region_col)
+
+<--Answer#3-->
+
+WorldCities %>% select(country) %>% unique() %>% head(9)
+
+<--Answer#4-->
+
+WorldCities %>% ggplot(aes(x = population)) +
+  geom_histogram() +
+  ggtitle('Shrisha\'s plot') +
+  xlab('World City Population') +
+  ylab('Number of People')
