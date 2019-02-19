@@ -1,0 +1,143 @@
+---
+title: "COMPSCIX 415.2 Homework 3"
+author: "Shrisha Yelluru"
+date: "2/18/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+install.packages("tidyverse")
+library(tidyverse)
+
+3.8.1.1 What is the problem with this plot? How could you improve it?
+
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point()
+
+There is overplotting here, the values of hwy and city are rounded off. 
+
+3.8.1.2 What parameters to geom_jitter() control the amount of jittering?
+
+The "width" and "height" controls the amount of jittering.
+
+3.8.1.3 Compare and contrast geom_jitter() with geom_count().
+
+count geom  counts the number of observations at each location, then maps the count to point area. It useful when you have discrete data and overplotting.
+
+jitter geom adds a small amount of random variation to the location of each point. It is very usefull in handling the overplotting caused by discreteness in smaller datasets.
+
+3.8.1.4 What’s the default position adjustment for geom_boxplot()? Create a visualisation of the mpg dataset that demonstrates it.
+
+The default position adjustment is position_dodge()
+
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) + 
+  geom_boxplot()
+
+Section 3.9.1
+3.9.1.1. Turn a stacked bar chart into a pie chart using coord_polar().
+
+ggplot(data = mpg, mapping = aes(x = factor(1), fill = class)) +
+  geom_bar(width = 1) +
+  coord_polar(theta = "y")
+  
+3.9.1.2 What does labs() do? Read the documentation.
+
+The labs() adds labels to the graph. We can add a title, subtitle, and a label for the x and y axes, as well as a caption.
+
+3.9.1.3 What’s the difference between coord_quickmap() and coord_map()?
+
+The coord_quickmap does quick approximation and preserve the straight lines whereas the coord_map() DO NOT preserve the straight lines.
+
+3.9.1.4 What does the plot below tell you about the relationship between city and highway mpg? Why is coord_fixed() important? What does geom_abline() do?
+
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point() + 
+  geom_abline() +
+  coord_fixed()
+  
+4.4.1 Why does this code not work?
+
+my_variable <- 10
+my_varıable
+
+There is a typo in variable name, the defined variable is my_variable NOT 
+my_varıable
+
+4.4.2 Tweak each of the following R commands so that they run correctly:
+
+library(tidyverse)
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  filter(mpg, cyl == 8)
+  
+filter(diamond, carat > 3) <== while working on the "mpg" data set it doesn't make sense to apply filter for diamond data set.
+
+library(nycflights13)
+view(flights)
+
+5.2.4.1 
+Find all flights that
+
+Had an arrival delay of two or more hours
+  - filter(flights, arr_delay >= 120)
+Flew to Houston (IAH or HOU) 
+  - filter(flights, dest == "IAH" || dest == "HOU")
+Were operated by United, American, or Delta
+  - filter(flights, carrier == "UA" | carrier == "AA" | carrier == "DL")
+Departed in summer (July, August, and September)
+  - filter(flights, month >=7,  month <= 9)
+Arrived more than two hours late, but didn’t leave late
+  - filter(flights, arr_delay >= 120, dep_delay <= 0)
+  
+Were delayed by at least an hour, but made up over 30 minutes in flight
+  -filter(flights, arr_delay >= 60, dep_delay - arr_delay>= 30)
+  
+Departed between midnight and 6am (inclusive)
+  -filter(flights, dep_time >=0, dep_time <= 600)
+
+5.2.4.3 How many flights have a missing dep_time? What other variables are missing? What might these rows represent?
+
+filter(flights, is.na(dep_time))
+
+5.2.4.4 Why is NA ^ 0 not missing? Why is NA | TRUE not missing? Why is FALSE & NA not missing? Can you figure out the general rule? (NA * 0 is a tricky counterexample!)
+
+NA ^ 0 - by definition anything to the 0th power is 1.
+NA | TRUE - as long as one condition is TRUE, the result is TRUE. By definition, TRUE is TRUE.
+FALSE & NA - NA indicates the absence of a value, so the conditional expression ignores it.
+In general any operation on a missing value becomes a missing value. Hence NA * 0 is NA. In conditional expressions, missing values are simply ignored.
+
+5.4.1.1 Brainstorm as many ways as possible to select dep_time, dep_delay, arr_time, and arr_delay from flights.
+select(flights, dep_time, dep_delay, arr_time, arr_delay)
+select(flights, starts_with("dep"), starts_with("arr"))
+
+5.4.1.3 What does the one_of() function do? Why might it be helpful in conjunction with this vector?
+
+vars <- c("year", "month", "day", "dep_delay", "arr_delay")
+select(flights, one_of(vars))
+
+It selects any variable which matches one of the strings in the vector.
+
